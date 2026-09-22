@@ -71,7 +71,46 @@ def process_mccc_data(lat_vol, lon_val, buf_m, start_s, end_s, cloud_pct):
           ' ((NIR - RED) / ((NIR - RED + L)) * (1 + L)', {
               'NIR' : dataset.select('B8'),
               'RED' : dataset.select('B4'),
-              'L': 
+              'L': 0.5
+      }
+ ).rename('SAVI')
+
+ # Clip layers to Area of Interest 
+ savi_clipped = savi.clip(roi)
+ mndwi_clipped = mndwi.clip(roi)
+ turb_clipped = turbidity.masked.clip(roi)
+ dataset.clipped = dataset.clip(roi)
+
+ # Calculate summary statistics over ROI
+ mean_savi = savi.clipped.reduceRegion(
+    reducer = ee.Reducer.mean(),
+    geometry = roi,
+    scale = 10,
+    maxPixels = 1e9
+).get ('MNDWI').getInfo()
+
+mean_mndwi = mndwi.clipped.reduceRegion(
+    reducer = ee.Reducer.mean(),
+    geometry = roi,
+    scale = 10,
+    maxPixels = 1e9
+).get ('Turbinity').getInfo()
+
+return dataset_clipped, savi_clipped, mndwi_clipped, turb_img, mean_savi_val, mean_mndwi_val, mean_turb_val = process_mccc_data(
+    lat, lon, buffer_meters, start_str, end_str, max_cloud
+)
+
+   # 4. App Header & Metric Cards
+
+   st.title (" MCCC Soil & Water Health Index)
+   st. markdown(f"**Target Location:** Blue Bell Campus Area | **Filter Period:**
+    '{start_str}' to '{end_str}' ")
+
+   # Simple status interpretation logic 
+   def evaluate_condition(savi_val, mndwi_val):
+      if savi_val is None:
+         return "Insufficent Data", "off"
+      elif savi_val < 0.2
 
 
 
