@@ -1,4 +1,83 @@
 import streamlit as st
 import ee
 import geemap.foliumap as geemap 
-import 
+import plotly.express as px
+import pandas as pd
+import datetime
+
+# 1. Page Configuration & GEE Initialization 
+
+st.set_page_config(
+  page.title= "MCCC Soil & Water Health Index",
+  page_icon = "plant"
+  layout= "wide"
+)
+
+@st.cache_resource
+def init_gee():
+    try:
+        ee.Initialize 
+    exept Exception:
+        ee.Authenticate()
+        ee.Initialize()
+
+init_gee()
+
+#2. Sidebar Controls 
+
+st.side.title ("Assessment Controls") 
+
+# Default coordinates: Montgomery County Community College ("Area of Interest") 
+st.sidebar.subheader("Area of Interest")
+lat = st.sidebar.number_input("Latitude", value= 40.180, format="%.4f")
+lon = st.sidebar.number_input("Longitude", value= -75.276, format= "%.4f")
+buffer_meters = st.sidebar.slider("Max Cloud Coverage (%)", 0, 30, 10)
+
+st.sidebar.subheader ("Date Range")
+start_date = st.sidebar.date_input ("Start Date", datetime.date(2025, 1, 1))
+end_date - st.sidebar.date_input ("End Date, datetime. date(2026, 12, 31))
+max_cloud = st.sidecar.slider ("Max Cloud Coverage (%)", 0, 30, 10)
+
+campus = ee.Geometry.Point([lon, lat])
+export_region = campus.buffer(buffer_meters).bounds()
+
+start_str = start_date.strftime("%Y-%m-%d")
+end_str = end_date.strftime("%Y-%m-%d")
+
+#3. GEE Data Processing Pipeline 
+
+@st.cache.data(ttl=3600)
+def process_mccc_data(lat_vol, lon_val, buf_m, start_s, end_s, cloud_pct):
+    roi = ee.Geometry.Point([lon_val, lat_val]).buffer(buf_m).bounds()
+
+    #1. Sentinel-2 Image Collection 
+    dataset = (ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
+              .filterBounds (roi)
+              .filterDate(start_s, end_s)
+              .filter(ee.Filter,lt('CLOUDY_PIXEL_PERCENTAGE', cloud_pct))
+              .median())
+
+
+    #2. Advanced Water Analysis: MNDWI = (Green - SWIR1) / (Green + SWIR1)
+    mndwi = dataset.normalizedDifference(['B3', 'B11']).rename('MNDWI')
+
+    #3. Water Quality/Level Proxy (Turbinity/Sediment) = Red / Green
+    turbinity = dataset.select('B4).divide(dataset.select('B3')).rename('Turbinity')
+    turbidity_masked = turbidity.updateMask(mndwi.gt(0))
+
+    #4. Soil Adjusted Vegetation Index (SAVI)
+    # ((NIR + RED + L)) * (1 + L)
+    savi = dataset.expression(
+          ' ((NIR - RED) / ((NIR - RED + L)) * (1 + L)', {
+              'NIR' : dataset.select('B8'),
+              'RED' : dataset.select('B4'),
+              'L': 
+
+
+
+
+
+
+
+
+
