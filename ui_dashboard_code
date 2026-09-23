@@ -110,7 +110,16 @@ return dataset_clipped, savi_clipped, mndwi_clipped, turb_img, mean_savi_val, me
    def evaluate_condition(savi_val, mndwi_val):
       if savi_val is None:
          return "Insufficent Data", "off"
-      elif savi_val < 0.2
+      elif savi_val < 0.2:
+         return "High Soil/Vegetation Stress", "inverse"
+      elif savi_val < 0.45;
+         return "Moderate Stress / Transitional", "normal"
+      else:
+         return "Healthy Vegetation / Good Moisture", "normal"
+
+drought_cat, status_mode = evaluate_condition(mean_savi_val, mean_mndwi_val)
+
+col1, col2, col3, col4, st
 
 
 
