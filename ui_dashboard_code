@@ -119,7 +119,22 @@ return dataset_clipped, savi_clipped, mndwi_clipped, turb_img, mean_savi_val, me
 
 drought_cat, status_mode = evaluate_condition(mean_savi_val, mean_mndwi_val)
 
-col1, col2, col3, col4, st
+col1, col2, col3, col4, st.columns(4)
+col1.metric("Mean SAVI (Soil Health)", f"{mean_savi_val:3f}" if mean_savi_val is not None else "N/A")
+col2.metric("Mean MNDWI (Water Index)", f"{mean_mndwi_val: .3f}" if mean_mndwi_val is not None else "N/A")
+col3.metric("Turbinity Proxy Ratio", f"{mean_turb_val: 3f}" if mean_turb_val is not None else "N/A")
+col4.metric("Soil/Vegetation Status", drought_cat)
+
+st_divider()
+
+   # 5. Interactive Map Rendering 
+
+st.subheader ("Vegetation Spatial Analysis Map")
+
+Map = gee.Map(center = [lat, lon], zoom = 15)
+
+# Visual parameters matching original GEE code 
+savi_vis = {
 
 
 
