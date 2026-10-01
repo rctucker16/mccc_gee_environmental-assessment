@@ -136,7 +136,7 @@ Map = gee.Map(center = [lat, lon], zoom = 15)
 # Visual parameters matching original GEE code
 savi_vis = {'min': 0.0, 'max': 0.8, 'palette': ['brown', 'yellow', 'green']}
 mndwi_vis = {'min':-1.0, 'max,: 0.5, 'palette': ['white', 'cyan', 'darkblue']}
-turb_vis = {
+turb_vis = {'min': 0.5, 'max': 1.5, 
 
 
 
