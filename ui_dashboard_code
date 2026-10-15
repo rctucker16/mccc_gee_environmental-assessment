@@ -136,7 +136,12 @@ Map = gee.Map(center = [lat, lon], zoom = 15)
 # Visual parameters matching original GEE code
 savi_vis = {'min': 0.0, 'max': 0.8, 'palette': ['brown', 'yellow', 'green']}
 mndwi_vis = {'min':-1.0, 'max,: 0.5, 'palette': ['white', 'cyan', 'darkblue']}
-turb_vis = {'min': 0.5, 'max': 1.5, 
+turb_vis = {'min': 0.5, 'max': 1.5, 'palette': ['blue', 'yellow', 'orange' ]}
+true_color_vis = {'bands': ['B4', 'B3', 'B2'], 'min': 0, 'max': 3000}
+
+# Add layers 
+map.addLayer(dataset_img, true_color_vis, 'True Color (B4/B3/B2)')
+
 
 
 
