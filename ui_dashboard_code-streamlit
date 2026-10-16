@@ -157,7 +157,13 @@ st.divider()
 
 st.subheader ("Index Trends & Water Metrics")
 
-# Sample dynamic monthly time-series 
+# Sample dynamic monthly time-series dataframe for display 
+dates = pd.dates_range(start=start_date, end=end_date, freq='ME')
+ts_df = pd.DataFrame({
+    'Date' : dates 
+    'SAVI': [max(0, (mean_savi_val or 0.3) + (i % 3 - 1) * 0.05) for i in 
+range(len(dates))],
+    'MNDWI': [(mean_mndwi_val or -0.1
 
 
 
