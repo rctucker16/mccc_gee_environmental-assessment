@@ -140,7 +140,27 @@ turb_vis = {'min': 0.5, 'max': 1.5, 'palette': ['blue', 'yellow', 'orange' ]}
 true_color_vis = {'bands': ['B4', 'B3', 'B2'], 'min': 0, 'max': 3000}
 
 # Add layers 
-map.addLayer(dataset_img, true_color_vis, 'True Color (B4/B3/B2)')
+Map.addLayer(dataset_img, true_color_vis, 'True Color (B4/B3/B2)')
+Map.addLayer(savi_img, savi_vis, 'Soil Health (SAVI)') 
+Map.addLayer(mndwi_img, mndwi_vis, 'Refined Water Levels (MNDWI')
+Map.addLayer(turb_img, turb_vis, 'Water Murkiness/Depth Proxy')
+Map.addLayer(export_region, {'color': 'red', 'fillColor': '00000000'}, 'AOI Boundary')
+
+Map.add_child(geemap.folium.LayerControl())
+
+# Display Map 
+Map.to.streamlit(height = 520)
+
+st.divider()
+
+ #6. Analytics & Time_Series Graphs 
+
+st.subheader ("Index Trends & Water Metrics")
+
+# Sample dynamic monthly time-series 
+
+
+
 
 
 
